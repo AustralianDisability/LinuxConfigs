@@ -1,0 +1,161 @@
+mkfs.ext4 /dev/nvme0n1p5 
+pacman -Syy
+pacman -S reflector
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+reflector -c "ES" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
+mount /dev/nvme0n1p5 /mnt
+pacstrap /mnt base linux linux-firmware vim nano
+
+genfstab -U /mnt >> /mnt/etc/fstab
+arch-chroot /mnt
+
+timedatectl set-timezone Europe/Madrid
+locale-gen # uncomment lenguage on /etc/locale.gen
+echo LANG=en_GB.UTF-8 > /etc/locale.conf
+export LANG=en_GB.UTF-8 
+echo 'KEYMAP=es' > /etc/vconsole.conf
+
+echo Azami > /etc/hostname
+printf "127.0.0.1\tlocalhost\n::1\t\tlocalhost\n127.0.1.1\tAzami\n" > /etc/hosts
+
+pacman -S grub efibootmgr
+mkdir /boot/efi
+mount /dev/nvme0n1p2 /boot/efi
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi 
+grub-mkconfig -o /boot/grub/grub.cfg
+
+passwd # root passwd
+
+pacman -S net-tools systemd-resolvconf tree man
+
+
+
+# install one display manager
+## Install SDDM https://wiki.archlinux.org/index.php/SDDM#Installation
+# pacman -S sddm
+
+# systemctl start sddm.service
+# systemctl enable sddm.service
+
+pacman -S gnome
+systemctl start gdm.service
+systemctl enable gdm.service
+systemctl enable NetworkManager.service
+
+useradd -m 'suzuran' -p 'a'
+
+# I3
+pacman -S i3-gaps i3status i3lock xorg-server xorg-xinit # Install all
+
+
+
+# instalar netplan
+pacman -S netplan
+
+# https://www.unixmen.com/10-useful-utilities-linux-users/
+
+# Windows manager
+
+# https://linuxcommando.blogspot.com/2014/07/how-to-change-window-manager-for-gnome.html
+
+## BSPWM
+# https://wiki.archlinux.org/index.php/Bspwm_(Espa%C3%B1ol)
+
+
+
+# Background manager
+
+export DISPLAY=:0
+
+## Feh, is a image viewer
+# https://wiki.archlinux.org/index.php/Feh#As
+
+# Jo
+
+wget https://cdn.discordapp.com/attachments/758823205778489364/758824239116845067/eeafc879-5560-445b-b61d-1b61b459c899.jfif  -P  /tmp/
+feh --bg-scale /tmp/eeafc879-5560-445b-b61d-1b61b459c899.jfif
+
+# Gundam
+
+wget https://c4.wallpaperflare.com/wallpaper/398/773/180/mobile-suit-mobile-suit-gundam-unicorn-mech-anime-artwork-hd-wallpaper-preview.jpg  -P
+feh --bg-scale /tmp/mobile-suit-mobile-suit-gundam-unicorn-mech-anime-artwork-hd-wallpaper-preview.jpg
+
+# Baiken
+
+# Dizzy
+wget https://i.redd.it/ss5y64va9iq31.jpg
+feh --bg-scale /tmp/ss5y64va9iq31.jpg
+
+# Dizzy 2
+wget https://www.fightersgeneration.com/characters/dizzy-wallpp.jpg
+feh --bg-scale /tmp/dizzy-wallpp.jpg
+
+# Dizzy 3
+wget https://i.pinimg.com/originals/f1/21/1b/f1211b565ad5690ab332f796a58dd4de.png
+feh --bg-scale f1211b565ad5690ab332f796a58dd4de.png
+
+# Panzer
+
+wget https://images8.alphacoders.com/710/thumb-1920-710247.png
+feh --bg-scale thumb-1920-710247.png
+
+# Shiki
+wget https://wallpapercave.com/wp/wp4091782.jpg
+feh --bg-scale wp4091782.jpg
+
+# Shiki (white) weird face
+wget https://images.alphacoders.com/789/789758.png
+feh --bg-scale 789758.png
+
+# KnK 2k
+
+wget https://w.wallha.com/ws/5/zP23J86k.png
+feh --bg-scale zP23J86k.png
+
+# Nerv wide
+wget https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/e1973af8-91dd-4f76-a1ec-182b2a057864/d4scvm6-151ab512-dc8d-4457-95ae-edb98c7fb53c.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZTE5NzNhZjgtOTFkZC00Zjc2LWExZWMtMTgyYjJhMDU3ODY0XC9kNHNjdm02LTE1MWFiNTEyLWRjOGQtNDQ1Ny05NWFlLWVkYjk4YzdmYjUzYy5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.G8-VSf2zdFxO0mZDK_1V8P--yNVUB-_D5cuISE90-aI
+mv d4scvm6-151ab512-dc8d-4457-95ae-edb98c7fb53c.png\?token\=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvZTE5NzNhZjgtOTFkZC00Zjc2LWExZWMtMTgyYjJhMDU3ODY0XC9kNHNjdm02LTE1MWFi nervWide.png
+feh --bg-scale nervWide.png
+
+# Asuka
+
+wget https://a-static.besthdwallpaper.com/asuka-langley-sohryu-neon-genesis-evangelion-wallpaper-1920x1080-21062_48.jpg
+feh --bg-scale nervWide.png
+
+# Eva
+
+wget https://pbs.twimg.com/media/D9mthKhUIAAZt3U.jpg:large
+feh --bg-scale nervWide.png
+
+# Monogatari
+
+wget https://images2.alphacoders.com/852/thumb-1920-852038.png
+feh --bg-scale nervWide.png
+
+# Software
+
+pacman -S chromium dolphin termite
+
+
+# i3 status
+
+# #!/bin/sh
+# feh --bg-scale '/home/$HOME/Documents/Wallpapers/mywallpaper.jpg' > $HOME/.fehbg
+echo 'exec --no-startup-id exec bash $HOME/.fehbg' >> $HOME/.config/i3/config 
+
+
+# https://www.mankier.com/1/i3status
+
+# http://kumarcode.com/Colorful-i3/
+
+# Termite
+
+# https://www.youtube.com/watch?v=eZiS5A3Vh18
+
+#cp /etc/xdg/termite/config $HOME/.config/i3/termite
+cp /etc/xdg/termite/config ~/.config/termite/config
+
+## Transparency
+
+# https://wiki.archlinux.org/index.php/Picom#Installation install compton
+pacman -S compton
